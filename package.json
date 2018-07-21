@@ -1,0 +1,36 @@
+{
+  "name": "honeybadger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-db": "mkdir -p ./db && mongod --dbpath ./db",
+    "stop-db": "killall mongod",
+    "test": "nyc mocha",
+    "lint": "eslint .",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.0",
+    "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
+    "eslint-plugin-node": "^6.0.1",
+    "express": "^4.16.3",
+    "jest": "^23.3.0",
+    "mongoose": "^5.2.1",
+    "morgan": "^1.9.0",
+    "nyc": "^12.0.2",
+    "winston": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicuparente/honeybadger.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nicuparente/honeybadger/issues"
+  },
+  "homepage": "https://github.com/nicuparente/honeybadger#readme"
+}
