@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 //Load ENV variables
 require('dotenv').config({path: `${__dirname}/.env`});
 
-
 const app = express();
 mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGODB_URI);
@@ -16,6 +15,7 @@ const PORT = process.env.PORT || 3000;
 app.use(morgan('dev'));
 app.use(cors());
 
+app.use(require('./route/user-route.js'));
 app.all('/api/*', (req, res, next) => res.sendStatus(404));
 
 app.listen(PORT);
