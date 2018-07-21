@@ -4,9 +4,14 @@ const mongoose = require('mongoose');
 
 const companySchema = mongoose.Schema({
   name: {type:String, required:true, unique:true, minlength:1},
-  foundations: [{type: mongoose.Schema.Types.ObjectId, ref: 'foundation'}],
+  foundations: [
+    {
+      id: { type: mongoose.Schema.Types.ObjectId, ref: 'foundation' },
+      foundationContribution: {type:Number}
+    }
+  ],
   campaigns: [{type: mongoose.Schema.Types.ObjectId, ref: 'campaign'}],
-  total_contributions: {type:Number}
+  totalContributions: {type:Number}
 });
 
 module.exports = mongoose.model('company', companySchema);

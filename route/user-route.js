@@ -12,7 +12,6 @@ userRouter.post('/api/signup', jsonParser, (req, res, next) => {
 });
 
 userRouter.get('/api/user/:id', (req, res, next) => {
-  console.log('hit GET route for User');
   User.findById(req.params.id)
     .then(user => {
       res.json(user);

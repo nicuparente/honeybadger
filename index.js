@@ -15,6 +15,9 @@ const PORT = process.env.PORT || 3000;
 app.use(morgan('dev'));
 app.use(cors());
 
+app.use(require('./route/company-route.js'));
+app.use(require('./route/campaign-route.js'));
+app.use(require('./route/foundation-route.js'));
 app.use(require('./route/user-route.js'));
 app.all('/api/*', (req, res, next) => res.sendStatus(404));
 
