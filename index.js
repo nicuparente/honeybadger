@@ -8,8 +8,8 @@ require('dotenv').config({path: `${__dirname}/.env`});
 
 const app = express();
 mongoose.Promise = Promise;
-mongoose.connect(process.env.MONGODB_URI);
-const PORT = process.env.PORT || 3000;
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost');
+const PORT = process.env.PORT || 8080;
 
 //Load Middleware
 app.use(morgan('dev'));
@@ -22,6 +22,7 @@ app.use(require('./route/user-route.js'));
 app.use(require('./route/give-route.js'));
 
 app.all('/api/*', (req, res, next) => res.sendStatus(404));
+
 
 app.listen(PORT);
 console.log(`Listening from ${ PORT }`)
