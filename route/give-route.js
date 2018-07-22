@@ -39,7 +39,6 @@ giveRouter.post('/api/give',jsonParser, (req, res, next) => {
       }
 
       let userFoundationNew = user.foundations.map(foundation => {
-        console.log(req.body.foundationId == foundation.foundationId)
         if(foundation.foundationId == req.body.foundationId){
           foundationFound = true;
           foundation.foundationContribution += donatedAmount;
@@ -56,7 +55,7 @@ giveRouter.post('/api/give',jsonParser, (req, res, next) => {
       }
       
       user.companies = userCompaniesNew;
-      user.foundations = UpdateFoundationArray(user.foundations);
+      user.foundations = userFoundationNew;
       user.contributionsTotal += donatedAmount;
       user.save();
     })
@@ -64,17 +63,15 @@ giveRouter.post('/api/give',jsonParser, (req, res, next) => {
   
   let companyP = Company.findById(req.body.companyId)
     .then(company => {
-      console.log(company)
       let foundationFound = false;
       let companyFoundationNew = company.foundations.map(foundation => {
-        console.log(req.body.foundationId == foundation.foundationId)
         if(foundation.foundationId == req.body.foundationId){
           foundationFound = true;
           foundation.foundationContribution += donatedAmount;
         }
           return foundation;
       })
-
+      console.log(foundationFound);
       if(!foundationFound){
         companyFoundationNew.push({
           foundationId: req.body.foundationId,
@@ -82,8 +79,7 @@ giveRouter.post('/api/give',jsonParser, (req, res, next) => {
           foundationContribution: donatedAmount
          })
       }
-      console.log(companyFoundationNew)
-      company.foundations = UpdateFoundationArray(company.foundations, foundation.foundationId);
+      company.foundations = companyFoundationNew;
       company.totalContributions += donatedAmount;
       company.save();
     })
@@ -91,6 +87,9 @@ giveRouter.post('/api/give',jsonParser, (req, res, next) => {
   
   Promise.all([userP,companyP]).then((result) => {
     res.send({"status": "Successful"})
+  })
+  .catch(err =>{
+    console.log(err)
   })
 });
 
