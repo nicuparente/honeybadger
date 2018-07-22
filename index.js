@@ -8,7 +8,7 @@ require('dotenv').config({path: `${__dirname}/.env`});
 
 const app = express();
 mongoose.Promise = Promise;
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost');
 const PORT = process.env.PORT || 8080;
 
 //Load Middleware
