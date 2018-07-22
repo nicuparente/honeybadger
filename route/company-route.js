@@ -1,7 +1,7 @@
 'use strict';
 const { Router } = require('express');
 const jsonParser = require('body-parser').json();
-const Company = require('../model/Company.js');
+const Company = require('../model/company.js');
 const companyRouter = module.exports = new Router();
 
 companyRouter.post('/api/company', jsonParser, (req, res, next) => {

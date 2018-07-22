@@ -1,7 +1,7 @@
 'use strict';
 const { Router } = require('express');
 const jsonParser = require('body-parser').json();
-const Campaign = require('../model/Campaign.js');
+const Campaign = require('../model/campaign.js');
 const campaignRouter = module.exports = new Router();
 
 campaignRouter.post('/api/campaign', jsonParser, (req, res, next) => {

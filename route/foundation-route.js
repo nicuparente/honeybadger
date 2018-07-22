@@ -2,7 +2,7 @@
 
 const { Router } = require('express');
 const jsonParser = require('body-parser').json();
-const Foundation = require('../model/Foundation.js');
+const Foundation = require('../model/foundation.js');
 const foundationRouter = module.exports = new Router();
 
 foundationRouter.post('/api/foundation', jsonParser, (req, res, next) => {

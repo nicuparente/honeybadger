@@ -11,16 +11,18 @@ const Foundation = mongoose.model('foundation');
 
 const giveRouter = module.exports = new Router();
 
+///This needs a huge refactor...... Sweetbaby Jesus
+
 giveRouter.post('/api/give',jsonParser, (req, res, next) => {
   let donatedAmount = req.body.donated
-  User.findById(req.body.userId)
+
+  //Update User Model Region
+  let userP = User.findById(req.body.userId)
     .then(user => {
       let companyFound = false;
       let foundationFound = false;
-      console.log(req.body)
       //Update Company Contributions in User 
       let userCompaniesNew = user.companies.map(company => {
-        console.log(req.body.companyId == company.companyId)
         if(company.companyId == req.body.companyId){
           companyFound = true;
           company.companyContribution += donatedAmount;
@@ -37,7 +39,6 @@ giveRouter.post('/api/give',jsonParser, (req, res, next) => {
       }
 
       let userFoundationNew = user.foundations.map(foundation => {
-        console.log(req.body.foundationId == foundation.foundationId)
         if(foundation.foundationId == req.body.foundationId){
           foundationFound = true;
           foundation.foundationContribution += donatedAmount;
@@ -46,7 +47,6 @@ giveRouter.post('/api/give',jsonParser, (req, res, next) => {
       })
 
       if(!foundationFound){
-        console.log(req.body.foundationName);
          userFoundationNew.push({
           foundationId: req.body.foundationId,
           foundationName: req.body.foundationName,
@@ -58,8 +58,42 @@ giveRouter.post('/api/give',jsonParser, (req, res, next) => {
       user.foundations = userFoundationNew;
       user.contributionsTotal += donatedAmount;
       user.save();
-      res.send({"status": "Successful"})
     })
     .catch(() => new Error('Cannot update'))
+  
+  //Update Company Model Region
+  let companyP = Company.findById(req.body.companyId)
+    .then(company => {
+      let foundationFound = false;
+      let newContributionTimeline = company.contributionTimeline;
+      
+      let companyFoundationNew = company.foundations.map(foundation => {
+        if(foundation.foundationId == req.body.foundationId){
+          foundationFound = true;
+          foundation.foundationContribution += donatedAmount;
+        }
+          return foundation;
+      })
+      console.log(foundationFound);
+      if(!foundationFound){
+        companyFoundationNew.push({
+          foundationId: req.body.foundationId,
+          foundationName: req.body.foundationName,
+          foundationContribution: donatedAmount
+         })
+      }
+      company.foundations = companyFoundationNew;
+      company.totalContributions += donatedAmount;
+      company.contributionTimeline.push({timestamp: Math.round(Date.now()/1000),value: company.totalContributions});
+      company.save();
+    })
+    .catch(() => new Error('Cannot update'))
+  
+  Promise.all([userP,companyP]).then((result) => {
+    res.send({"status": "Successful"})
+  })
+  .catch(err =>{
+    console.log(err)
+  })
 });
 
