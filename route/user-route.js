@@ -18,3 +18,11 @@ userRouter.get('/api/user/:id', (req, res, next) => {
     })
     .catch(next);
 });
+
+userRouter.get('/api/user', (req, res, next) => {
+  User.find({})
+    .then(user => {
+      res.json(user);
+    })
+    .catch(next);
+});
