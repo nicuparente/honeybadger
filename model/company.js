@@ -12,7 +12,8 @@ const companySchema = mongoose.Schema({
     }
   ],
   campaigns: [{type: mongoose.Schema.Types.ObjectId, ref: 'campaign'}],
-  totalContributions: {type:Number}
+  totalContributions: {type:Number},
+  contributionTimeline: [{timestamp:{type:Number},value: {type:Number}}]
 });
 
 module.exports = mongoose.model('company', companySchema);

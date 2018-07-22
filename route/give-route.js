@@ -16,7 +16,7 @@ const giveRouter = module.exports = new Router();
 giveRouter.post('/api/give',jsonParser, (req, res, next) => {
   let donatedAmount = req.body.donated
 
-  //Needed to update the User data regarding donation
+  //Update User Model Region
   let userP = User.findById(req.body.userId)
     .then(user => {
       let companyFound = false;
@@ -61,9 +61,12 @@ giveRouter.post('/api/give',jsonParser, (req, res, next) => {
     })
     .catch(() => new Error('Cannot update'))
   
+  //Update Company Model Region
   let companyP = Company.findById(req.body.companyId)
     .then(company => {
       let foundationFound = false;
+      let newContributionTimeline = company.contributionTimeline;
+      
       let companyFoundationNew = company.foundations.map(foundation => {
         if(foundation.foundationId == req.body.foundationId){
           foundationFound = true;
@@ -81,6 +84,7 @@ giveRouter.post('/api/give',jsonParser, (req, res, next) => {
       }
       company.foundations = companyFoundationNew;
       company.totalContributions += donatedAmount;
+      company.contributionTimeline.push({timestamp: Math.round(Date.now()/1000),value: company.totalContributions});
       company.save();
     })
     .catch(() => new Error('Cannot update'))
