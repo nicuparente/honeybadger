@@ -4,7 +4,7 @@ const User = require('./model/user.js');
 const Company = require('./model/company.js');
 const Foundation = require('./model/foundation.js');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost');
+mongoose.connect(process.env.MONGODB_URI);
 
 function seedDB(data){
   User.remove({}, (data)=> data);
