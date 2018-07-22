@@ -19,6 +19,8 @@ app.use(require('./route/company-route.js'));
 app.use(require('./route/campaign-route.js'));
 app.use(require('./route/foundation-route.js'));
 app.use(require('./route/user-route.js'));
+app.use(require('./route/give-route.js'));
+
 app.all('/api/*', (req, res, next) => res.sendStatus(404));
 
 app.listen(PORT);
